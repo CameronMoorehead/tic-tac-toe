@@ -1,11 +1,5 @@
 /* ttt */
 
-/*var combinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7],
-                    [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]];
-var position1 = ["_", "x", "o", "_", "x", "_", "o", "_", "_"];
-*/
-
-
 
 /* Primitive for counting appearances of key in an array */
 
@@ -18,6 +12,8 @@ function appearances(key, array) {
     }
     return count;
 }
+
+/* Game Logic */
 
 function findTriples(position) {
     return combinations.map(function(x) {
