@@ -59,6 +59,17 @@ function blockOpponentWin(triples, me) {
     return chooseWinningMove(triples, opponent(me))
 }
 
+function iCanFork(triples, me) {
+    return firstIfAny(pivots(triples, me))
+}
+
+function firstIfAny(array) {
+    if (array.length === 0)
+        return false
+    else
+        return array[0]
+}
+
 console.log(blockOpponentWin([[1, "x", "o"], [4, "x", 6], ["o", 8, 9], [1, 4, "o"],
                      ["x", "x", 8], ["o", 6, 9], [1, "x", 9], ["o", "x", "o"]], "o"));
 
