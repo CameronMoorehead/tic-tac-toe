@@ -70,6 +70,16 @@ function firstIfAny(array) {
         return array[0]
 }
 
+function pivots(triples, me) {
+    return triples.filter(function(x) {
+        return mySingle(x, me)
+    })
+}
+
+function mySingle(triple, me) {
+    return (appearances(me, triple) === 1) && (appearances(opponent(me), triple) === 0)
+}
+
 console.log(blockOpponentWin([[1, "x", "o"], [4, "x", 6], ["o", 8, 9], [1, 4, "o"],
                      ["x", "x", 8], ["o", 6, 9], [1, "x", 9], ["o", "x", "o"]], "o"));
 
