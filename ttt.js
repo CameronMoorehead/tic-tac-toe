@@ -17,6 +17,8 @@ function opponent(letter) {
     return letter === "x" ? "o" : "x"
 }
 
+var combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
+
 /* -- Game Logic -- */
 
 /* Triples */
@@ -116,6 +118,27 @@ function bestMove(myTriples, triples, me) {
     else
         return bestSquare(myTriples[0], triples, me)
 }
+
+function bestSquare(myTriple, triples, me) {
+    let numbersOnly = myTriple.filter(function(x) {
+        return typeof x === "number"
+    })
+    return bestSquareHelper(choosePivot(triples, opponent(me)), numbersOnly)
+}
+
+function bestSquareHelper(opponentPivots, pair) {
+    if (appearances(pair[0], opponentPivots) > 0)
+        return pair[0]
+    else
+        return pair[1]
+}
+
+console.log(bestSquare([7,8,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
+console.log(bestSquare([3,6,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
+console.log(bestMove([[3,6,"o"],[7,8,"o"]], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
+console.log(iCanAdvance(findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
+
+
 
 
 
