@@ -133,22 +133,27 @@ function bestSquareHelper(opponentPivots, pair) {
         return pair[1]
 }
 
+/* bestFreeSquare */
+
+function bestFreeSquare(triples) {
+    let flattened = triples.reduce(function(a, b) {
+        return a.concat(b)
+    }, [])
+    return firstChoice(flattened, [5,1,3,7,9,2,4,6,8])
+}
+
+function firstChoice(possibilities, preferences) {
+    console.log("test")
+}
+
+/*
+
 console.log(bestSquare([7,8,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
 console.log(bestSquare([3,6,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
 console.log(bestMove([[3,6,"o"],[7,8,"o"]], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
 console.log(iCanAdvance(findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
-
-
-
-
-
-
-
-
-/*
 console.log(blockOpponentWin([[1, "x", "o"], [4, "x", 6], ["o", 8, 9], [1, 4, "o"],
                      ["x", "x", 8], ["o", 6, 9], [1, "x", 9], ["o", "x", "o"]], "o"));
-
 console.log(iCanFork([["x","o",3],[4,"x",6],[7,8,"o"],["x",4,7],["o","x",8],[3,6,"o"],["x","x","o"],
             [3,"x",7]], "o"));
 */
