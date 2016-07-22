@@ -108,6 +108,10 @@ function selectPivot(sortedList) {
 /* iCanAdvance */
 
 function iCanAdvance(triples, me) {
+    return chooseAdvance(triples, me)
+}
+
+function chooseAdvance(triples, me) {
     let myTriples = filterSingles(triples, me)
     return bestMove(myTriples, triples, me)
 }
@@ -143,11 +147,20 @@ function bestFreeSquare(triples) {
 }
 
 function firstChoice(possibilities, preferences) {
-    console.log("test")
+    let filteredPreferences = preferences.filter(function(x) {
+        return (appearances(x, possibilities))
+    })
+    return filteredPreferences[0]
 }
 
-/*
+console.log(firstChoice([1,2,3,4,5,6,7,8,9,1,4,7,2,5,8,3,6,9,1,5,8,3,5,7], [5,1,3,7,9,2,4,6,8]))
+console.log(firstChoice([1,"x","o",4,"x",6,"o",8,9,1,4,"o","x","x",8,"o",6,9,1,"x",9,"o","x","o"], [5,1,3,7,9,2,4,6,8]))
+console.log(bestFreeSquare(findTriples(["_","_","_","_","_","_","_","_","_"])))
+console.log(bestFreeSquare(findTriples(["_","_","_","_","x","_","_","_","_"])))
 
+
+
+/*
 console.log(bestSquare([7,8,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
 console.log(bestSquare([3,6,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
 console.log(bestMove([[3,6,"o"],[7,8,"o"]], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
