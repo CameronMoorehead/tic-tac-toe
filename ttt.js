@@ -17,9 +17,26 @@ function opponent(letter) {
     return letter === "x" ? "o" : "x"
 }
 
-var combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
+var combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 
 /* -- Game Logic -- */
+
+function ttt(position, me) {
+    return tttChoose(findTriples(position), me)
+}
+
+function tttChoose(triples, me) {
+    if (iCanWin(triples, me))
+        return chooseWinningMove(triples, me)
+    else if (opponentCanWin(triples, me))
+        return blockOpponentWin(triples, me)
+    else if (iCanFork(triples, me))
+        return choosePivot
+    else if (iCanAdvance(triples, me))
+        return chooseAdvance(triples, me)
+    else
+        return bestFreeSquare(triples)
+}
 
 /* Triples */
 function findTriples(position) {
@@ -60,7 +77,7 @@ function chooseWinningMove(triples, me) {
 
 
 function opponentCanWin(triples, me) {
-    return winningTriples(triples, opponent(me)) > 0
+    return winningTriples(triples, opponent(me)).length > 0
 }
 
 function blockOpponentWin(triples, me) {
@@ -153,20 +170,42 @@ function firstChoice(possibilities, preferences) {
     return filteredPreferences[0]
 }
 
-console.log(firstChoice([1,2,3,4,5,6,7,8,9,1,4,7,2,5,8,3,6,9,1,5,8,3,5,7], [5,1,3,7,9,2,4,6,8]))
-console.log(firstChoice([1,"x","o",4,"x",6,"o",8,9,1,4,"o","x","x",8,"o",6,9,1,"x",9,"o","x","o"], [5,1,3,7,9,2,4,6,8]))
-console.log(bestFreeSquare(findTriples(["_","_","_","_","_","_","_","_","_"])))
-console.log(bestFreeSquare(findTriples(["_","_","_","_","x","_","_","_","_"])))
+/* -- Tests -- */
 
-
+console.log("ttt tests:")
+console.log(ttt(["_","_","_","_","x","_","_","_","_"], "o"))
+console.log(ttt(["o","_","_","x","x","_","_","_","_"], "o"))
+console.log(ttt(["o","_","x","x","x","o","_","_","_"], "o"))
+console.log(ttt(["o","_","x","x","x","o","o","x","_"], "o"))
 
 /*
-console.log(bestSquare([7,8,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
-console.log(bestSquare([3,6,"o"], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
-console.log(bestMove([[3,6,"o"],[7,8,"o"]], findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
-console.log(iCanAdvance(findTriples(["x","o","_","_","x","_","_","_","o"]), "o"))
-console.log(blockOpponentWin([[1, "x", "o"], [4, "x", 6], ["o", 8, 9], [1, 4, "o"],
-                     ["x", "x", 8], ["o", 6, 9], [1, "x", 9], ["o", "x", "o"]], "o"));
-console.log(iCanFork([["x","o",3],[4,"x",6],[7,8,"o"],["x",4,7],["o","x",8],[3,6,"o"],["x","x","o"],
-            [3,"x",7]], "o"));
+console.log("find triples tests:")
+console.log(findTriples(["_","x","o","_","x","_","o","_","_"]))
+console.log(findTriples(["x","_","_","_","_","_","o","x","o"]))
+
+console.log("opponent tests:")
+console.log(opponent("x"))
+console.log(opponent("o"))
+
+console.log("myPair tests:")
+
+console.log(myPair(["o","o",7], "o"))
+console.log(myPair(["x","o",7], "o"))
+console.log(myPair(["o","o","x"], "o"))
+
+console.log("iCanWin tests:")
+console.log(iCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
+                     ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "x"))
+console.log(iCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
+                     ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "o"))
+
+console.log("chooseWinningMove tests:")
+console.log(chooseWinningMove([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
+                               ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "x"))
+
+console.log("opponentCanWin tests:")
+console.log(opponentCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
+                               ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "x"))
+console.log(opponentCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
+                               ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "o"))
 */
