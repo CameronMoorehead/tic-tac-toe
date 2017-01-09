@@ -2,8 +2,11 @@ import React from 'react'
 
 class TTTboard extends React.Component {
     render() {
+        console.log(this.props.onComputerMove)
         return (
-            <p>TTTboard</p>
+            <div>
+                <p>TTTboard</p>
+            </div>
         )
     }
 }

@@ -38,6 +38,13 @@ function tttChoose(triples, me) {
         return bestFreeSquare(triples)
 }
 
+function exposeNumber(position) {
+    if (typeof position === 'object')
+        return position[0]
+    else
+        return position
+}
+
 /* Triples */
 function findTriples(position) {
     return combinations.map(function(x) {
@@ -170,13 +177,19 @@ function firstChoice(possibilities, preferences) {
     return filteredPreferences[0]
 }
 
+export { ttt }
+
+
 /* -- Tests -- */
 
+/*
 console.log("ttt tests:")
 console.log(ttt(["_","_","_","_","x","_","_","_","_"], "o"))
 console.log(ttt(["o","_","_","x","x","_","_","_","_"], "o"))
 console.log(ttt(["o","_","x","x","x","o","_","_","_"], "o"))
 console.log(ttt(["o","_","x","x","x","o","o","x","_"], "o"))
+*/
+
 
 /*
 console.log("find triples tests:")
