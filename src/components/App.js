@@ -10,6 +10,7 @@ import { ttt } from '../utils/ttt'
 class App extends React.Component {
     constructor() {
         super()
+        this.difficultyHandler = this.difficultyHandler.bind(this)
         this.computerMoveHandler = this.computerMoveHandler.bind(this)
         this.playerMoveHandler = this.playerMoveHandler.bind(this)
         this.state = {
@@ -20,9 +21,14 @@ class App extends React.Component {
         }
     }
 
+    difficultyHandler(e) {
+        console.log(e.target.id)
+        this.setState({ difficulty: e.target.id })
+    }
 
     // Player moves and AI respons with board state updated
     computerMoveHandler() {
+        console.log(this.state.difficulty)
         return ttt(this.state.difficulty, this.state.board, this.state.cpu)
     }
     playerMoveHandler(e) {
@@ -38,7 +44,9 @@ class App extends React.Component {
         return (
         <div className="tic-tac-toe">
             <h1 className="title">Tic-Tac-Toe</h1>
-            <DifficultyMenu />
+            <DifficultyMenu 
+                onDifficultyChange={this.difficultyHandler}
+            />
             <TTTboard
                 onPlayerMove={this.playerMoveHandler}
                 theBoard={this.state.board}
