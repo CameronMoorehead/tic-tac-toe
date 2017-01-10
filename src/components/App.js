@@ -3,7 +3,7 @@ import React from 'react'
 import DifficultyMenu from './DifficultyMenu'
 import TTTboard from './TTTboard'
 import Scoreboard from './Scoreboard'
-import Start from './Start'
+import Restart from './Restart'
 
 import { ttt } from '../utils/ttt'
 
@@ -17,7 +17,9 @@ class App extends React.Component {
             difficulty: 'medium',
             board: ['_','_','_','_','_','_','_','_','_'],
             cpu: 'o',
-            player: 'x'
+            player: 'x',
+            cpuScore: 0,
+            playerScore: 0
         }
     }
 
@@ -52,7 +54,9 @@ class App extends React.Component {
                 theBoard={this.state.board}
             />
             <Scoreboard />
-            <Start />
+            <Restart 
+                theBoard={this.state.board}
+            />
         </div>
         )
     }
