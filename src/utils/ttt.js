@@ -1,7 +1,5 @@
 /* ttt */
 
-"use strict"
-
 /* Primitive functions */
 
 function appearances(key, array) {
@@ -21,22 +19,59 @@ var combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5
 
 /* -- Game Logic -- */
 
-function ttt(position, me) {
-    return tttChoose(findTriples(position), me)
+// Call to TTT accepts String for difficulty
+
+function ttt(difficulty, position, me) {
+    if (difficulty === "easy")
+        return exposeNumber(tttEasy(findTriples(position), me))
+    else if (difficulty === "medium")
+        return exposeNumber(tttMedium(findTriples(position), me))
+    else if (difficulty === "hard")
+        return exposeNumber(tttHard(findTriples(position), me))
 }
 
-function tttChoose(triples, me) {
-    if (iCanWin(triples, me))
-        return chooseWinningMove(triples, me)
-    else if (opponentCanWin(triples, me))
-        return blockOpponentWin(triples, me)
-    else if (iCanFork(triples, me))
-        return choosePivot
-    else if (iCanAdvance(triples, me))
-        return chooseAdvance(triples, me)
+// 60% chance to move optimally
+
+function tttEasy(triples, me) {
+    let roll = Math.random()
+    if (roll < 0.6)
+        return tttHard(triples, me)
     else
         return bestFreeSquare(triples)
 }
+
+// 80% chance to move opitmally
+
+function tttMedium(triples, me) {
+    let roll = Math.random()
+    if (roll < 0.8)
+        return tttHard(triples, me)
+    else
+        return bestFreeSquare(triples)
+}
+
+// Always ends in tie
+
+function tttHard(triples, me) {
+    if (iCanWin(triples, me)) {
+        console.log("iCanWin")
+        return chooseWinningMove(triples, me)
+    } else if (opponentCanWin(triples, me)) {
+        console.log("opponentCanWin")
+        return blockOpponentWin(triples, me)
+    } else if (iCanFork(triples, me)) {
+        console.log("iCanFork")
+        return choosePivot
+    } else if (iCanAdvance(triples, me)) {
+        console.log("iCanAdvance")
+        return chooseAdvance(triples, me)
+    } else {
+        console.log("bestFree")
+        return bestFreeSquare(triples)
+    }
+}
+
+// Function to remove Array type wrapper from returned position
 
 function exposeNumber(position) {
     if (typeof position === 'object')
@@ -179,6 +214,18 @@ function firstChoice(possibilities, preferences) {
 
 export { ttt }
 
+// Tests with difficulty string
+
+/*
+console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
+console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
+console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
+console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
+console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
+console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
+*/
+
+// Game logic tests
 
 /* -- Tests -- */
 
