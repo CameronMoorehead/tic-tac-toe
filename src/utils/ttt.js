@@ -34,10 +34,10 @@ function ttt(difficulty, position, me) {
 
 function tttEasy(triples, me) {
     let roll = Math.random()
-    if (roll < 0.6)
+    if (roll < 0.1)
         return tttHard(triples, me)
     else
-        return bestFreeSquare(triples)
+        return bestFreeSquare(triples, me)
 }
 
 // 80% chance to move opitmally
@@ -47,14 +47,17 @@ function tttMedium(triples, me) {
     if (roll < 0.8)
         return tttHard(triples, me)
     else
-        return bestFreeSquare(triples)
+        return bestFreeSquare(triples, me)
 }
 
 // Always ends in tie
 
 function tttHard(triples, me) {
-    if (iCanWin(triples, me)) {
-        console.log("iCanWin")
+    if (playerWinner(triples, me)) {
+        console.log("player wins!")
+        return announceWinner(opponent(me))
+    } else if (iCanWin(triples, me)) {
+        console.log('cpu wins')
         return chooseWinningMove(triples, me)
     } else if (opponentCanWin(triples, me)) {
         console.log("opponentCanWin")
@@ -67,7 +70,7 @@ function tttHard(triples, me) {
         return chooseAdvance(triples, me)
     } else {
         console.log("bestFree")
-        return bestFreeSquare(triples)
+        return bestFreeSquare(triples, me)
     }
 }
 
@@ -90,6 +93,20 @@ function findTriples(position) {
                 return position[y -1]
         })
     })
+}
+
+/* Detect & Announce Winners */
+
+function playerWinner(triples, me) {
+    return triples.some(function(x) {
+        return x.every(function(y) {
+            return y === opponent(me)
+        })
+    })
+}
+
+function announceWinner(me) {
+    return console.log(me + " wins")
 }
 
 /* iCanWin */
@@ -198,11 +215,19 @@ function bestSquareHelper(opponentPivots, pair) {
 
 /* bestFreeSquare */
 
-function bestFreeSquare(triples) {
+function bestFreeSquare(triples, me) {
     let flattened = triples.reduce(function(a, b) {
         return a.concat(b)
     }, [])
-    return firstChoice(flattened, [5,1,3,7,9,2,4,6,8])
+    let option1 = firstChoice(flattened, [5,1,3,7,9,2,4,6,8])
+    let possible = iCanWin(triples, me)
+    if (possible) {
+        console.log('cpu wins')
+        return chooseWinningMove(triples, me)
+    } 
+    if (playerWinner(triples, me))
+        return console.log('player wins')
+    return option1 
 }
 
 function firstChoice(possibilities, preferences) {
