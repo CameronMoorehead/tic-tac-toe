@@ -5,6 +5,7 @@ class Restart extends React.Component {
         return (
             <div>
                 <button onClick={function() { window.location.reload() }}>Restart</button>
+                <button id="trigger" onClick={function() { window.location.reload() }}>Restart</button>
             </div>
         )
     }

@@ -1,5 +1,6 @@
 /* ttt */
 
+
 /* Primitive functions */
 
 function appearances(key, array) {
@@ -16,6 +17,10 @@ function opponent(letter) {
 }
 
 var combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+
+function tester() {
+    return console.log("test")
+}
 
 /* -- Game Logic -- */
 
@@ -34,7 +39,7 @@ function ttt(difficulty, position, me) {
 
 function tttEasy(triples, me) {
     let roll = Math.random()
-    if (roll < 0.1)
+    if (roll < 0.00001)
         return tttHard(triples, me)
     else
         return bestFreeSquare(triples, me)
@@ -54,22 +59,20 @@ function tttMedium(triples, me) {
 
 function tttHard(triples, me) {
     if (playerWinner(triples, me)) {
-        console.log("player wins!")
+        tester()
+        console.log("player wins1!")
         return announceWinner(opponent(me))
     } else if (iCanWin(triples, me)) {
-        console.log('cpu wins')
+        tester()
+        console.log("cpu wins1!")
         return chooseWinningMove(triples, me)
     } else if (opponentCanWin(triples, me)) {
-        console.log("opponentCanWin")
         return blockOpponentWin(triples, me)
     } else if (iCanFork(triples, me)) {
-        console.log("iCanFork")
         return choosePivot
     } else if (iCanAdvance(triples, me)) {
-        console.log("iCanAdvance")
         return chooseAdvance(triples, me)
     } else {
-        console.log("bestFree")
         return bestFreeSquare(triples, me)
     }
 }
@@ -106,7 +109,7 @@ function playerWinner(triples, me) {
 }
 
 function announceWinner(me) {
-    return console.log(me + " wins")
+    return console.log(me + " wins!")
 }
 
 /* iCanWin */
@@ -222,11 +225,14 @@ function bestFreeSquare(triples, me) {
     let option1 = firstChoice(flattened, [5,1,3,7,9,2,4,6,8])
     let possible = iCanWin(triples, me)
     if (possible) {
-        console.log('cpu wins')
+        tester()
+        console.log('cpu wins2!')
         return chooseWinningMove(triples, me)
     } 
-    if (playerWinner(triples, me))
-        return console.log('player wins')
+    if (playerWinner(triples, me)) {
+        tester()
+        return console.log('player wins2!')
+    }
     return option1 
 }
 
@@ -237,60 +243,4 @@ function firstChoice(possibilities, preferences) {
     return filteredPreferences[0]
 }
 
-export { ttt }
-
-// Tests with difficulty string
-
-/*
-console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
-console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
-console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
-console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
-console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
-console.log(ttt("easy", ["o","_","_","x","x","_","_","_","_"], "o"))
-*/
-
-// Game logic tests
-
-/* -- Tests -- */
-
-/*
-console.log("ttt tests:")
-console.log(ttt(["_","_","_","_","x","_","_","_","_"], "o"))
-console.log(ttt(["o","_","_","x","x","_","_","_","_"], "o"))
-console.log(ttt(["o","_","x","x","x","o","_","_","_"], "o"))
-console.log(ttt(["o","_","x","x","x","o","o","x","_"], "o"))
-*/
-
-
-/*
-console.log("find triples tests:")
-console.log(findTriples(["_","x","o","_","x","_","o","_","_"]))
-console.log(findTriples(["x","_","_","_","_","_","o","x","o"]))
-
-console.log("opponent tests:")
-console.log(opponent("x"))
-console.log(opponent("o"))
-
-console.log("myPair tests:")
-
-console.log(myPair(["o","o",7], "o"))
-console.log(myPair(["x","o",7], "o"))
-console.log(myPair(["o","o","x"], "o"))
-
-console.log("iCanWin tests:")
-console.log(iCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
-                     ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "x"))
-console.log(iCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
-                     ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "o"))
-
-console.log("chooseWinningMove tests:")
-console.log(chooseWinningMove([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
-                               ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "x"))
-
-console.log("opponentCanWin tests:")
-console.log(opponentCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
-                               ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "x"))
-console.log(opponentCanWin([[1,"x","o"],[4,"x",6],["o",8,9],[1,4,"o"],
-                               ["x","x",8],["o",6,9],[1,"x",9],["o","x","o"]], "o"))
-*/
+export { ttt, findTriples }
