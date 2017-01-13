@@ -18,10 +18,6 @@ function opponent(letter) {
 
 var combinations = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
 
-function tester() {
-    return console.log("test")
-}
-
 /* -- Game Logic -- */
 
 // Call to TTT accepts String for difficulty
@@ -58,13 +54,7 @@ function tttMedium(triples, me) {
 // Always ends in tie
 
 function tttHard(triples, me) {
-    if (playerWinner(triples, me)) {
-        tester()
-        console.log("player wins1!")
-        return announceWinner(opponent(me))
-    } else if (iCanWin(triples, me)) {
-        tester()
-        console.log("cpu wins1!")
+    if (iCanWin(triples, me)) {
         return chooseWinningMove(triples, me)
     } else if (opponentCanWin(triples, me)) {
         return blockOpponentWin(triples, me)
@@ -222,18 +212,7 @@ function bestFreeSquare(triples, me) {
     let flattened = triples.reduce(function(a, b) {
         return a.concat(b)
     }, [])
-    let option1 = firstChoice(flattened, [5,1,3,7,9,2,4,6,8])
-    let possible = iCanWin(triples, me)
-    if (possible) {
-        tester()
-        console.log('cpu wins2!')
-        return chooseWinningMove(triples, me)
-    } 
-    if (playerWinner(triples, me)) {
-        tester()
-        return console.log('player wins2!')
-    }
-    return option1 
+    return firstChoice(flattened, [5,1,3,7,9,2,4,6,8])
 }
 
 function firstChoice(possibilities, preferences) {

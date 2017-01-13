@@ -13,6 +13,7 @@ class App extends React.Component {
         this.difficultyHandler = this.difficultyHandler.bind(this)
         this.computerMoveHandler = this.computerMoveHandler.bind(this)
         this.playerMoveHandler = this.playerMoveHandler.bind(this)
+        this.restartBoard = this.restartBoard.bind(this)
         this.checkWinner = this.checkWinner.bind(this)
         this.state = {
             difficulty: 'medium',
@@ -26,16 +27,14 @@ class App extends React.Component {
     }
 
     difficultyHandler(e) {
-        console.log(e.target.id)
-        console.log(findTriples(this.state.board))
         this.setState({ difficulty: e.target.id })
     }
 
-    // Player moves and AI respons with board state updated
+    // Player moves and AI responds with board state updated
     computerMoveHandler() {
-        console.log(this.state.difficulty)
         this.checkWinner()
-        return ttt(this.state.difficulty, this.state.board, this.state.cpu)
+        if (!this.state.gameOver)
+            return ttt(this.state.difficulty, this.state.board, this.state.cpu)
     }
     playerMoveHandler(e) {
         const board = {...this.state.board}
@@ -45,6 +44,10 @@ class App extends React.Component {
             this.setState({ board: board })
             this.checkWinner()
         })
+    }
+
+    restartBoard() {
+        this.setState({ board: ['_','_','_','_','_','_','_','_','_'] })
     }
 
 
@@ -97,6 +100,7 @@ class App extends React.Component {
             />
             <Restart 
                 theBoard={this.state.board}
+                restartBoard={this.restartBoard}
             />
             { declareWinner }
         </div>

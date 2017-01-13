@@ -9,3 +9,12 @@ h1 {
     height: 100%;
     text-align: center;
 }
+button {
+    text-decoration: none;
+    background-color: white;
+    color: red;
+    border-color: black;
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+}
