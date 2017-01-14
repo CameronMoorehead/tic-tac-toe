@@ -15,6 +15,7 @@ class App extends React.Component {
         this.playerMoveHandler = this.playerMoveHandler.bind(this)
         this.restartBoard = this.restartBoard.bind(this)
         this.checkWinner = this.checkWinner.bind(this)
+        this.nextTurn = this.nextTurn.bind(this)
         this.state = {
             difficulty: 'medium',
             board: ['_','_','_','_','_','_','_','_','_'],
@@ -22,7 +23,8 @@ class App extends React.Component {
             player: 'x',
             cpuScore: 0,
             playerScore: 0,
-            gameOver: false
+            gameOver: false,
+            playerTurn: 1
         }
     }
 
@@ -30,28 +32,37 @@ class App extends React.Component {
         this.setState({ difficulty: e.target.id })
     }
 
-    // Player moves and AI responds with board state updated
-    computerMoveHandler() {
-        if (!this.state.gameOver)
-            return ttt(this.state.difficulty, this.state.board, this.state.cpu)
-    }
-    playerMoveHandler(e) {
-        e.target.disabled = true
-        const board = {...this.state.board}
-        board[e.target.id - 1] = this.state.player
-        this.setState({ board: board }, function() {
-            if (this.checkWinner()) {
-                board[this.computerMoveHandler() - 1] = this.state.cpu
-                this.setState({ board: board })
-                this.checkWinner()
-            }
-        })
-    }
-
     restartBoard() {
         this.setState({ board: ['_','_','_','_','_','_','_','_','_'] })
     }
 
+    nextTurn() {
+        return this.state.playerTurn === 1 ? 2 : 1
+    }
+
+    computerMoveHandler() {
+        setTimeout(() => {
+            let cpuMove = ttt(this.state.difficulty, this.state.board, this.state.cpu)
+            if (!this.state.gameOver) {
+                const board = {...this.state.board}
+                board[cpuMove -1] = this.state.cpu
+                this.setState({ board: board, playerTurn: this.nextTurn()})
+                this.checkWinner()
+            }
+        }, 200) 
+    }
+
+    playerMoveHandler(e) {
+        let positionEmpty = this.state.board[e.target.id - 1] === '_'
+        if (positionEmpty) {
+            const board = {...this.state.board}
+            board[e.target.id - 1] = this.state.player
+            this.setState({ board: board, playerTurn: this.nextTurn() }, function() {
+                this.checkWinner()
+                this.computerMoveHandler()
+            })
+        }
+    }
 
     checkWinner() {
         let checkForWinner = (function(player) {
@@ -63,20 +74,14 @@ class App extends React.Component {
         }).bind(this)
 
         if (checkForWinner(this.state.player)) {
-            this.setState({
-                gameOver: true,
-                playerScore: (this.state.playerScore + 1)
-            })
-            return false
+            this.setState({ gameOver: true, playerScore: (this.state.playerScore + 1) })
+            return true
         }
         if (checkForWinner(this.state.cpu)) {
-            this.setState({
-                gameOver: true,
-                cpuScore: (this.state.cpuScore + 1)
-            })
-            return false
+            this.setState({ gameOver: true, cpuScore: (this.state.cpuScore + 1)})
+            return true
         }
-        return true
+        return false
     }
 
     render() {
