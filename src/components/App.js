@@ -32,17 +32,19 @@ class App extends React.Component {
 
     // Player moves and AI responds with board state updated
     computerMoveHandler() {
-        this.checkWinner()
         if (!this.state.gameOver)
             return ttt(this.state.difficulty, this.state.board, this.state.cpu)
     }
     playerMoveHandler(e) {
+        e.target.disabled = true
         const board = {...this.state.board}
         board[e.target.id - 1] = this.state.player
         this.setState({ board: board }, function() {
-            board[this.computerMoveHandler() - 1] = this.state.cpu
-            this.setState({ board: board })
-            this.checkWinner()
+            if (this.checkWinner()) {
+                board[this.computerMoveHandler() - 1] = this.state.cpu
+                this.setState({ board: board })
+                this.checkWinner()
+            }
         })
     }
 
@@ -65,13 +67,16 @@ class App extends React.Component {
                 gameOver: true,
                 playerScore: (this.state.playerScore + 1)
             })
+            return false
         }
         if (checkForWinner(this.state.cpu)) {
             this.setState({
                 gameOver: true,
                 cpuScore: (this.state.cpuScore + 1)
             })
+            return false
         }
+        return true
     }
 
     render() {
