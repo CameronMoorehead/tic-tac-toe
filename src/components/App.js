@@ -33,7 +33,10 @@ class App extends React.Component {
     }
 
     restartBoard() {
-        this.setState({ board: ['_','_','_','_','_','_','_','_','_'] })
+        this.setState({
+            board: ['_','_','_','_','_','_','_','_','_'],
+            gameOver: false
+        })
     }
 
     nextTurn() {
