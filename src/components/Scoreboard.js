@@ -4,8 +4,7 @@ class Scoreboard extends React.Component {
     render() {
         return (
             <div>
-                <p>Scoreboard</p>
-                <p>{this.props.pScore}, {this.props.cScore}</p>
+                <p>W: {this.props.pScore} L: {this.props.cScore} T: {this.props.tScore}</p>
             </div>
         )
     }

@@ -3,7 +3,6 @@ import React from 'react'
 import DifficultyMenu from './DifficultyMenu'
 import TTTboard from './TTTboard'
 import Scoreboard from './Scoreboard'
-import Restart from './Restart'
 
 import { ttt, findTriples } from '../utils/ttt'
 
@@ -23,8 +22,10 @@ class App extends React.Component {
             player: 'x',
             cpuScore: 0,
             playerScore: 0,
+            tieScore: 0,
             gameOver: false,
-            playerTurn: 1
+            playerTurn: 1,
+            winner: ''
         }
     }
 
@@ -76,23 +77,36 @@ class App extends React.Component {
             })
         }).bind(this)
 
+        let checkForTie = (function() {
+            return findTriples(this.state.board).every(function(x) {
+                return x.every(function(y) {
+                    return y === 'x' || y === 'o'
+                })
+            })
+        }).bind(this)
+
         if (checkForWinner(this.state.player)) {
-            this.setState({ gameOver: true, playerScore: (this.state.playerScore + 1) })
+            this.setState({ gameOver: true, playerScore: (this.state.playerScore + 1), winner: 'Player Wins!' })
             return true
         }
         if (checkForWinner(this.state.cpu)) {
-            this.setState({ gameOver: true, cpuScore: (this.state.cpuScore + 1)})
+            this.setState({ gameOver: true, cpuScore: (this.state.cpuScore + 1), winner: 'CPU Wins!'})
+            return true
+        }
+        if (checkForTie()) {
+            this.setState({ gameOver: true, tieScore: (this.state.tieScore + 1), winner: 'It\'s a tie!'})
             return true
         }
         return false
     }
 
     render() {
-        let declareWinner;
+        let declareResults;
         if (this.state.gameOver) {
-            declareWinner = (
-                <div>
-                    <p>Winner!</p>
+            declareResults = (
+                <div className="declare">
+                    <p>{this.state.winner}</p>
+                    <button onClick={this.restartBoard}>Restart</button>
                 </div>
             )
         }
@@ -110,12 +124,9 @@ class App extends React.Component {
             <Scoreboard
                 pScore={this.state.playerScore}
                 cScore={this.state.cpuScore}
+                tScore={this.state.tieScore}
             />
-            <Restart 
-                theBoard={this.state.board}
-                restartBoard={this.restartBoard}
-            />
-            { declareWinner }
+            { declareResults }
         </div>
         )
     }

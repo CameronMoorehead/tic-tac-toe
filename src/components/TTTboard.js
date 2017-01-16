@@ -4,7 +4,6 @@ class TTTboard extends React.Component {
     render() {
         return (
             <div>
-                <p>TTTboard</p>
                 {Array.apply(null, Array(9)).map(function(element, i) 
                     {
                         if ((i+1) % 3 === 0)
