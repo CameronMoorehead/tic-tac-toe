@@ -25,7 +25,8 @@ class App extends React.Component {
             tieScore: 0,
             gameOver: false,
             playerTurn: 1,
-            winner: ''
+            winner: '',
+            message: ''
         }
     }
 
@@ -36,8 +37,10 @@ class App extends React.Component {
     restartBoard() {
         this.setState({
             board: ['_','_','_','_','_','_','_','_','_'],
-            gameOver: false
-        })
+            gameOver: false,
+        }, () => {if (this.state.winner === 'o') {
+            return this.computerMoveHandler()
+        }})
     }
 
     nextTurn() {
@@ -61,7 +64,7 @@ class App extends React.Component {
         if (positionEmpty) {
             const board = {...this.state.board}
             board[e.target.id - 1] = this.state.player
-            this.setState({ board: board, playerTurn: this.nextTurn() }, function() {
+            this.setState({ board: board, playerTurn: this.nextTurn() }, () => {
                 this.checkWinner()
                 this.computerMoveHandler()
             })
@@ -86,15 +89,15 @@ class App extends React.Component {
         }).bind(this)
 
         if (checkForWinner(this.state.player)) {
-            this.setState({ gameOver: true, playerScore: (this.state.playerScore + 1), winner: 'Player Wins!' })
+            this.setState({ gameOver: true, playerScore: (this.state.playerScore + 1), winner: 'x', message: 'Player Wins!' })
             return true
         }
         if (checkForWinner(this.state.cpu)) {
-            this.setState({ gameOver: true, cpuScore: (this.state.cpuScore + 1), winner: 'CPU Wins!'})
+            this.setState({ gameOver: true, cpuScore: (this.state.cpuScore + 1), winner: 'o', message: 'CPU Wins!'})
             return true
         }
         if (checkForTie()) {
-            this.setState({ gameOver: true, tieScore: (this.state.tieScore + 1), winner: 'It\'s a tie!'})
+            this.setState({ gameOver: true, tieScore: (this.state.tieScore + 1), message: 'It\'s a tie!'})
             return true
         }
         return false
@@ -105,7 +108,7 @@ class App extends React.Component {
         if (this.state.gameOver) {
             declareResults = (
                 <div className="declare">
-                    <p>{this.state.winner}</p>
+                    <p>{this.state.message}</p>
                     <button onClick={this.restartBoard}>Restart</button>
                 </div>
             )

@@ -59,7 +59,7 @@ function tttHard(triples, me) {
     } else if (opponentCanWin(triples, me)) {
         return blockOpponentWin(triples, me)
     } else if (iCanFork(triples, me)) {
-        return choosePivot
+        return choosePivot(triples, me)
     } else if (iCanAdvance(triples, me)) {
         return chooseAdvance(triples, me)
     } else {
