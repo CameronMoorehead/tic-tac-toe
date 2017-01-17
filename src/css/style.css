@@ -16,10 +16,12 @@ button {
     text-decoration: none;
     background-color: white;
     border-color: #1A1A1A;
+    border: solid;
     width: 80px;
     height: 80px;
     font-size: 50px;
     margin: 3px;
+    padding: 0;
 }
 .difficulty-menu form {
     display: flex;
